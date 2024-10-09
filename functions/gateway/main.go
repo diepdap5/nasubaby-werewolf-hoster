@@ -15,7 +15,6 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	db_key := os.Getenv("DB_KEY")
 	public_key := os.Getenv("PUBLIC_KEY")
 	bot_token := os.Getenv("BOT_TOKEN")
 	app_id := os.Getenv("APP_ID")
@@ -89,7 +88,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = handler.Handler(s, &inter, db_key)
+		err = handler.Handler(s, &inter)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
