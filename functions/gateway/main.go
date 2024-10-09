@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"io"
 	"log"
-	"nasubaby-werewolf-hoster/cmd/commands"
 	"net/http"
 	"os"
+
+	"nasubaby-werewolf-hoster/cmd/commands"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -103,7 +104,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/bot", handler)
+	http.HandleFunc("/interactions", handler)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
