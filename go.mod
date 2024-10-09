@@ -1,4 +1,4 @@
-module babynasu-queen
+module nasubaby-werewolf-hoster
 
 go 1.16
 

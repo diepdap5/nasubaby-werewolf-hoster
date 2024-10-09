@@ -1,8 +1,8 @@
 package command_init
 
 import (
-	"babynasu-queen/cmd/commands"
 	"log"
+	"nasubaby-werewolf-hoster/cmd/commands"
 
 	"github.com/bwmarrin/discordgo"
 )

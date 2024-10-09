@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"babynasu-queen/cmd/handler"
 	"log"
+	"nasubaby-werewolf-hoster/cmd/handler"
 
 	"github.com/bwmarrin/discordgo"
 )

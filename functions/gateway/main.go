@@ -1,8 +1,6 @@
 package main
 
 import (
-	"babynasu-queen/cmd/command_init"
-	"babynasu-queen/cmd/commands"
 	"crypto/ed25519"
 	"encoding/base64"
 	"encoding/hex"
@@ -10,6 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"nasubaby-werewolf-hoster/cmd/command_init"
+	"nasubaby-werewolf-hoster/cmd/commands"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"

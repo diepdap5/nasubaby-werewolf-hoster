@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"babynasu-queen/cmd/repository"
 	"errors"
 	"log"
+	"nasubaby-werewolf-hoster/cmd/repository"
 
 	"github.com/bwmarrin/discordgo"
 )
