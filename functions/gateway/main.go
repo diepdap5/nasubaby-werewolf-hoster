@@ -64,7 +64,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Authorized
-	var inter discordgo.Interaction
+	var inter discordgo.InteractionCreate
 	err = json.Unmarshal(bodyBytes, &inter)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)

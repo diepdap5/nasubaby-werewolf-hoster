@@ -1,48 +1,33 @@
 package commands
 
 import (
-	"log"
-	"nasubaby-werewolf-hoster/cmd/handler"
-
 	"github.com/bwmarrin/discordgo"
 )
 
-type (
-	HandlerSig      = func(*discordgo.Session, *discordgo.Interaction, string) error
-	ContinuationSig = func(*discordgo.Interaction) error
-)
+// CommandHandler is a function type for handling commands
+type CommandHandler func(s *discordgo.Session, i *discordgo.InteractionCreate, dbKey string) error
 
-// checks for inconsistencies in Commands
-func init() {
-	for key := range Commands {
-		if Commands[key].Command.Name != key {
-			log.Fatalf("Error: Key [%s] in Commands doesn't equal the Name property [%s]\n", key, Commands[key].Command.Name)
-		}
-		if Commands[key].Handler == nil {
-			log.Fatalf("Error: Handler for command [%s] is nil \n", key)
-		}
-	}
-}
-
+// Command represents a command with its handler
 type Command struct {
-	Command      discordgo.ApplicationCommand
-	Handler      HandlerSig
-	Continuation ContinuationSig
+	Name    string
+	Handler CommandHandler
 }
 
+// Commands is a map of command names to their handlers
 var Commands = map[string]Command{
 	"ping": {
-		Command: discordgo.ApplicationCommand{
-			Name:        "ping",
-			Description: "Send ping to get pong",
-		},
-		Handler: handler.PingHandler,
+		Name:    "ping",
+		Handler: PingHandler,
 	},
-	"gamestart": {
-		Command: discordgo.ApplicationCommand{
-			Name:        "gamestart",
-			Description: "Start game werewolf!",
+}
+
+// PingHandler handles the /ping command
+func PingHandler(s *discordgo.Session, i *discordgo.InteractionCreate, dbKey string) error {
+	response := &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseChannelMessageWithSource,
+		Data: &discordgo.InteractionResponseData{
+			Content: "Pong!",
 		},
-		Handler: handler.StartGameHandler,
-	},
+	}
+	return s.InteractionRespond(i.Interaction, response)
 }
