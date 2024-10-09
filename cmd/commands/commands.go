@@ -5,7 +5,7 @@ import (
 )
 
 // CommandHandler is a function type for handling commands
-type CommandHandler func(s *discordgo.Session, i *discordgo.InteractionCreate) error
+type CommandHandler func(s *discordgo.Session, i *discordgo.InteractionCreate, dbKey string) error
 
 // Command represents a command with its handler
 type Command struct {
@@ -22,7 +22,7 @@ var Commands = map[string]Command{
 }
 
 // PingHandler handles the /ping command
-func PingHandler(s *discordgo.Session, i *discordgo.InteractionCreate) error {
+func PingHandler(s *discordgo.Session, i *discordgo.InteractionCreate, dbKey string) error {
 	response := &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{

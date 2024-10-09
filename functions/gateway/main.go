@@ -63,7 +63,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Authorized
-	var inter discordgo.InteractionCreate
+	var inter discordgo.Interaction
 	err = json.Unmarshal(bodyBytes, &inter)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -88,7 +88,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = handler.Handler(s, &inter)
+		interactionCreate := discordgo.InteractionCreate{Interaction: &inter}
+		err = handler.Handler(s, &interactionCreate, inter.ApplicationCommandData().Name)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -108,5 +109,22 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
+
+	// Register the /ping command
+	bot_token := os.Getenv("BOT_TOKEN")
+	app_id := os.Getenv("APP_ID")
+	dg, err := discordgo.New("Bot " + bot_token)
+	if err != nil {
+		log.Fatalf("Error creating Discord session: %v", err)
+	}
+
+	_, err = dg.ApplicationCommandCreate(app_id, "", &discordgo.ApplicationCommand{
+		Name:        "ping",
+		Description: "Replies with Pong!",
+	})
+	if err != nil {
+		log.Fatalf("Error creating command: %v", err)
+	}
+
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
