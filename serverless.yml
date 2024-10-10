@@ -1,0 +1,47 @@
+service: discord-bot
+
+provider:
+  name: aws
+  runtime: provided.al2
+  region: us-east-1
+
+functions:
+  interactive_commands:
+    handler: functions/interactive_commands.lambda/main.go
+    events:
+      - http:
+          path: interactions
+          method: post
+    environment:
+      DB_KEY: ${env:DB_KEY}
+      PUBLIC_KEY: ${env:PUBLIC_KEY}
+      BOT_TOKEN: ${env:BOT_TOKEN}
+      APP_ID: ${env:APP_ID}
+
+  update_commands:
+    handler: functions/update_commands.lambda/main.go
+    events:
+      - http:
+          path: updateCommands
+          method: post
+    environment:
+      BOT_TOKEN: ${env:BOT_TOKEN}
+      APP_ID: ${env:APP_ID}
+
+plugins:
+  - serverless-go-plugin
+  - serverless-dotenv-plugin
+
+custom:
+  go:
+    cmd: GOARCH=amd64 GOOS=linux go build -ldflags="-s -w"
+    supportedRuntimes: [ "provided.al2" ]
+    buildProvidedRuntimeAsBootstrap: true
+
+package:
+  include:
+    - .env
+  exclude:
+    - node_modules/**
+    - .gitignore
+    - .git/**
