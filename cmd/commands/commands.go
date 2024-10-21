@@ -1,51 +1,25 @@
 package commands
 
 import (
-	"github.com/bwmarrin/discordgo"
+	"nasubaby-werewolf-hoster/cmd/handler"
+	"nasubaby-werewolf-hoster/cmd/model"
 )
 
-// CommandHandler is a function type for handling commands
-type CommandHandler func(s *discordgo.Session, i *discordgo.InteractionCreate) error
-
-// Command represents a command with its handler
-type Command struct {
-	Name        string
-	Description string
-	Handler     CommandHandler
-}
-
 // Commands is a map of command names to their handlers
-var Commands = map[string]Command{
+var Commands = map[string]model.Command{
 	"ping": {
 		Name:        "ping",
 		Description: "A simple ping command",
-		Handler:     PingHandler,
+		Handler:     handler.PingHandler,
 	},
 	"hello": {
 		Name:        "hello",
 		Description: "Responds with 'Hello, world!'",
-		Handler:     HelloHandler,
+		Handler:     handler.HelloHandler,
 	},
-}
-
-// PingHandler handles the /ping command
-func PingHandler(s *discordgo.Session, i *discordgo.InteractionCreate) error {
-	response := &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{
-			Content: "Pong!",
-		},
-	}
-	return s.InteractionRespond(i.Interaction, response)
-}
-
-// HelloHandler handles the /hello command
-func HelloHandler(s *discordgo.Session, i *discordgo.InteractionCreate) error {
-	response := &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{
-			Content: "Hello, world!",
-		},
-	}
-	return s.InteractionRespond(i.Interaction, response)
+	"listgamebase": {
+		Name:        "listgamebase",
+		Description: "List all game bases",
+		Handler:     handler.ListGameBaseHandler,
+	},
 }

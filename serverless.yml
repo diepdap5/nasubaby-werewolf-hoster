@@ -13,10 +13,14 @@ functions:
           path: interactions
           method: post
     environment:
-      DB_KEY: ${env:DB_KEY}
       PUBLIC_KEY: ${env:PUBLIC_KEY}
       BOT_TOKEN: ${env:BOT_TOKEN}
       APP_ID: ${env:APP_ID}
+      DB_USERNAME: ${env:DB_AURORA_USERNAME}
+      DB_PASSWORD: ${env:DB_AURORA_PASSWORD}
+      DB_NAME: ${env:DB_AURORA_NAME}
+      DB_HOST: ${env:DB_AURORA_HOST}
+      DB_PORT: ${env:DB_AURORA_PORT}
 
   update_commands:
     handler: functions/update_commands.lambda/main.go
