@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -18,12 +19,14 @@ func GetDBConnection() (*sql.DB, error) {
 		os.Getenv("DB_AURORA_NAME"))
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
+		log.Println("Error opening database connection:", err)
 		return nil, err
 	}
 
 	// Verify the connection
 	err = db.Ping()
 	if err != nil {
+		log.Println("Error connecting to the database:", err)
 		return nil, err
 	}
 

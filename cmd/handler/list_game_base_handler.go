@@ -12,32 +12,42 @@ import (
 
 // HelloHandler handles the /hello command
 func ListGameBaseHandler(s *discordgo.Session, i *discordgo.InteractionCreate) error {
+	// Get database connection
 	db, err := db.GetDBConnection()
 	if err != nil {
-		return err
+		response := &discordgo.InteractionResponse{
+			Type: discordgo.InteractionResponseChannelMessageWithSource,
+			Data: &discordgo.InteractionResponseData{
+				Content: "Failed to get game bases due to database connection error",
+			},
+		}
+		return s.InteractionRespond(i.Interaction, response)
 	}
 	// Get all game bases
-	gamebase, err := repository.GetGameBases(db)
+	gamebase, err := repository.GetAll(db)
 	if err != nil {
 		log.Println(err)
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		response := &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
 				Content: "Failed to get game bases",
 			},
-		})
-		return err
+		}
+		return s.InteractionRespond(i.Interaction, response)
 	}
 	content := "Game Bases:\n"
 	for _, gb := range gamebase {
-		content += strconv.Itoa(gb.ID+1) + ": " + strconv.Itoa(gb.RoleCount) + ": " + "\n" + "- " + strings.Join(gb.RolesList, "\n- ") + "\n"
+		rolesList := make([]string, len(gb.RolesList))
+		for i, role := range gb.RolesList {
+			rolesList[i] = role.Name // Assuming model.Role has a Name field
+		}
+		content += strconv.Itoa(gb.ID+1) + ": " + strconv.Itoa(gb.RoleCount) + ": " + "\n" + "- " + strings.Join(rolesList, "\n- ") + "\n"
 	}
-
-	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+	response := &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
 			Content: content,
 		},
-	})
-	return nil
+	}
+	return s.InteractionRespond(i.Interaction, response)
 }

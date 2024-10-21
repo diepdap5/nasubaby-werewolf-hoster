@@ -6,9 +6,9 @@ import (
 	"nasubaby-werewolf-hoster/cmd/model"
 )
 
-func GetGameBases(db *sql.DB) ([]*model.GameBase, error) {
+func GetAll(db *sql.DB) ([]*model.GameBase, error) {
 	// Prepare the query
-	query := "SELECT id, name, description FROM game_base"
+	query := "SELECT id, role_count, roles_list FROM gamebase"
 
 	// Execute the query
 	rows, err := db.Query(query)
